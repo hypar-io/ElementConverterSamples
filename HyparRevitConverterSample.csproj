@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="RevitAPI">
+            <HintPath>C:\Program Files\Autodesk\Revit 2021\RevitAPI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Hypar.Elements.Conversion.Revit" Version="0.0.1-alpha.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ConverterFiles Include="$(TargetDir)/$(TargetName).dll" />
+        <ConverterFiles Include="$(TargetDir)/$(TargetName).pdb" />
+    </ItemGroup>
+
+    <Target Name="DeployConverter" AfterTargets="Build">
+        <MakeDir Directories="$(AppData)\Autodesk\Revit\Addins\2021\Hypar.Revit\Converters" />
+        <RemoveDir Directories="$(AppData)\Autodesk\Revit\Addins\2021\Hypar.Revit\Converters\$(ProjectName)" />
+        <Copy SourceFiles="@(ConverterFiles)" DestinationFolder="$(AppData)\Autodesk\Revit\Addins\2021\Hypar.Revit\Converters\$(ProjectName)\%(RecursiveDir)" />
+    </Target>
+
+</Project>
